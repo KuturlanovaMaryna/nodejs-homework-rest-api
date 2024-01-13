@@ -3,8 +3,10 @@ const path = require("node:path");
 const contactsPath = path.join(__dirname, "./contacts.json");
 const { nanoid } = require("nanoid");
 
+const Contact = require("../../shema/contacts-schema");
+
 async function listContacts() {
-  const data = await fs.readFile(contactsPath, { encoding: "utf-8" });
+  const data = await Contact.find();
 
   return JSON.parse(data);
 }
