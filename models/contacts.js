@@ -3,9 +3,9 @@ const path = require("node:path");
 const contactsPath = path.join(__dirname, "./contacts.json");
 const { nanoid } = require("nanoid");
 
-const Contact = require("../../shema/contacts-schema");
+const Contact = require("../shema/contacts-schema");
 
-async function listContacts() {
+async function listContacts(req, res, next) {
   const data = await Contact.find();
 
   return JSON.parse(data);
