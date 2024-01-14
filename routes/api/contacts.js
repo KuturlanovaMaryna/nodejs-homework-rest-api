@@ -6,6 +6,7 @@ const contactsFoo = require("../../models/contacts");
 const {
   newContactSchema,
   contactUpdateSchema,
+  updateFavoriteContactSchema,
 } = require("../../shemas_joi/shemas_joi");
 
 router.get("/", async (req, res, next) => {
@@ -84,11 +85,15 @@ router.put("/:contactId", async (req, res, next) => {
 
 router.patch("/:contactId/favorite", async (req, res, next) => {
   try {
-    if (req.body.favorite === "undefined") {
+    const { error } = updateFavoriteContactSchema.validate(req.body);
+    if (error) {
       return res.status(400).json({ message: "missing field favorite" });
     }
+
     const { contactId } = req.params;
-    const result = await contactsFoo.updateStatusContact(contactId, req.body);
+    const result = await contactsFoo.updateStatusContact(contactId, req.body, {
+      new: true,
+    });
     if (!result) {
       return res.status(400).json({ message: "Not found" });
     }

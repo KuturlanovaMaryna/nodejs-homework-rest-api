@@ -23,7 +23,12 @@ const contactUpdateSchema = Joi.object({
     "object.min": "missing fields",
   });
 
+const updateFavoriteContactSchema = Joi.object({
+  favorite: Joi.boolean().required(),
+});
+
 module.exports = {
   newContactSchema,
   contactUpdateSchema,
+  updateFavoriteContactSchema,
 };
