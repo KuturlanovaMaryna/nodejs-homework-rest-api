@@ -89,7 +89,7 @@ router.patch("/:contactId/favorite", isValidId, async (req, res, next) => {
   try {
     const { error } = updateFavoriteContactSchema.validate(req.body);
     if (error) {
-      return res.status(400).json({ message: "missing field favorite" });
+      return res.status(400).json({ message: error.message });
     }
     const { contactId } = req.params;
     const result = await contactsFoo.updateStatusContact(contactId, req.body, {
