@@ -67,16 +67,19 @@ router.delete("/:contactId", isValidId, async (req, res, next) => {
 });
 
 router.put("/:contactId", isValidId, async (req, res, next) => {
+  if (!req.body) {
+    return res.status(400).json({ message: "missing fields" });
+  }
   try {
-    const value = contactUpdateSchema.validate(req.body);
-    if (typeof value.error !== "undefined") {
-      return res.status(400).json({ message: value.error.details[0].message });
+    const { error } = contactUpdateSchema.validate(req.body);
+    if (error) {
+      return res.status(400).json({ message: error.message });
     }
     const { contactId } = req.params;
 
     const result = await contactsFoo.updateContact(contactId, req.body);
     if (!result) {
-      return res.status(400).json({ message: "missing fields" });
+      return res.status(404).json({ message: "Not found" });
     }
 
     res.status(200).json(result);
@@ -87,16 +90,23 @@ router.put("/:contactId", isValidId, async (req, res, next) => {
 
 router.patch("/:contactId/favorite", isValidId, async (req, res, next) => {
   try {
+    if (!req.body) {
+      return res.status(400).json({ message: "missing field favorite" });
+    }
     const { error } = updateFavoriteContactSchema.validate(req.body);
     if (error) {
       return res.status(400).json({ message: error.message });
     }
     const { contactId } = req.params;
-    const result = await contactsFoo.updateStatusContact(contactId, req.body, {
-      new: true,
-    });
+    const result = await contactsFoo.updateStatusContact(
+      contactId,
+      req.body.favorite,
+      {
+        new: true,
+      }
+    );
     if (!result) {
-      return res.status(400).json({ message: "Not found" });
+      return res.status(404).json({ message: "Not found" });
     }
     res.status(200).json(result);
   } catch (error) {
