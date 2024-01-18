@@ -68,7 +68,7 @@ router.delete("/:contactId", isValidId, async (req, res, next) => {
 
 router.put("/:contactId", isValidId, async (req, res, next) => {
   try {
-    if (!req.body || Object.keys(req.body).length === 0) {
+    if (Object.keys(req.body).length === 0) {
       return res.status(400).json({ message: "missing fields" });
     }
     const { error } = contactUpdateSchema.validate(req.body);
@@ -90,7 +90,7 @@ router.put("/:contactId", isValidId, async (req, res, next) => {
 
 router.patch("/:contactId/favorite", isValidId, async (req, res, next) => {
   try {
-    if (!req.body || Object.keys(req.body).length === 0) {
+    if (Object.keys(req.body).length === 0) {
       return res.status(400).json({ message: "missing field favorite" });
     }
     const { error } = updateFavoriteContactSchema.validate(req.body);

@@ -16,12 +16,7 @@ const contactUpdateSchema = Joi.object({
   name: Joi.string(),
   email: Joi.string().email(),
   phone: Joi.string(),
-})
-  .required()
-  .min(1)
-  .messages({
-    "object.min": "missing fields",
-  });
+});
 
 const updateFavoriteContactSchema = Joi.object({
   favorite: Joi.boolean().required(),
