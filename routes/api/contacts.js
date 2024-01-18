@@ -67,10 +67,10 @@ router.delete("/:contactId", isValidId, async (req, res, next) => {
 });
 
 router.put("/:contactId", isValidId, async (req, res, next) => {
-  if (!req.body || Object.keys(req.body).length === 0) {
-    return res.status(400).json({ message: "missing fields" });
-  }
   try {
+    if (!req.body || Object.keys(req.body).length === 0) {
+      return res.status(400).json({ message: "missing fields" });
+    }
     const { error } = contactUpdateSchema.validate(req.body);
     if (error) {
       return res.status(400).json({ message: error.message });
