@@ -1,10 +1,12 @@
 const mongoose = require("mongoose");
 const Joi = require("joi");
 
+const { handleMongooseError } = require("../helpers/handleMongooseError");
+
 const emailRegexp = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 const subscriptionList = ["starter", "pro", "business"];
 
-const userShema = new mongoose.Schema(
+const userSchema = new mongoose.Schema(
   {
     password: {
       type: String,
@@ -25,13 +27,11 @@ const userShema = new mongoose.Schema(
       type: String,
       default: null,
     },
-    owner: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "user",
-    },
   },
   { versionKey: false, timestamps: true }
 );
+
+userSchema.post("save", handleMongooseError);
 
 const registerSchema = Joi.object({
   email: Joi.string().pattern(emailRegexp).required(),
@@ -53,6 +53,6 @@ const schemas = {
   loginSchema,
   subscriptionListSchema,
 };
-const User = mongoose.model("user", userShema);
+const User = mongoose.model("user", userSchema);
 
 module.exports = { User, schemas };
