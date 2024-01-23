@@ -5,6 +5,10 @@ const ctrl = require("../../controllers/auth");
 const { schemas } = require("../../models/user");
 const { validateBody } = require("../../middlewares/validateBody");
 
-router.post("/register", validateBody(schemas.registerSchema), ctrl.register);
+router.post(
+  "/users/register",
+  validateBody(schemas.registerSchema),
+  ctrl.register
+);
 
 module.exports = router;
