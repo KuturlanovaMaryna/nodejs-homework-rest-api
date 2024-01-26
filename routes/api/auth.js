@@ -5,6 +5,8 @@ const ctrl = require("../../controllers/auth");
 const { schemas } = require("../../models/user");
 const { validateBody } = require("../../middlewares/validateBody");
 
+const authenticate = require("../../middlewares/authenticate");
+
 router.post(
   "/users/register",
   validateBody(schemas.registerSchema),
@@ -12,5 +14,16 @@ router.post(
 );
 
 router.post("/users/login", validateBody(schemas.loginSchema), ctrl.login);
+
+router.post("/logout", authenticate, ctrl.logOut);
+
+router.get("/current", authenticate, ctrl.getCurrent);
+
+router.patch(
+  "/",
+  authenticate,
+  validateBody(schemas.subscriptionListSchema),
+  ctrl.updateSubscription
+);
 
 module.exports = router;
