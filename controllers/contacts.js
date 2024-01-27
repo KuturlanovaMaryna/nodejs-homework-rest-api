@@ -19,7 +19,7 @@ const getAll = async (req, res) => {
 const getById = async (req, res, next) => {
   const { _id: owner } = req.user;
   const { contactId } = req.params;
-  const contact = await Contact.findById({ _id: contactId, owner });
+  const contact = await Contact.findOne({ _id: contactId, owner });
   if (contact) {
     console.log(contact);
     return res.status(200).json(contact);
@@ -28,8 +28,9 @@ const getById = async (req, res, next) => {
 };
 
 const removeContact = async (req, res, next) => {
+  const { _id: owner } = req.user;
   const { contactId } = req.params;
-  const contact = await Contact.findByIdAndDelete(contactId);
+  const contact = await Contact.findOneAndDelete({ _id: contactId, owner });
   if (contact) {
     console.log(contact);
     return res.status(200).json({ message: "Contact deleted" });
@@ -82,7 +83,7 @@ const updateStatusContact = async (req, res, next) => {
   }
   const { contactId } = req.params;
   const { _id: owner } = req.user;
-  const result = await Contact.findByIdAndUpdate(
+  const result = await Contact.findOneAndUpdate(
     { _id: contactId, owner },
     { new: true }
   );
