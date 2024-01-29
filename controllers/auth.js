@@ -55,13 +55,14 @@ const logOut = async (req, res) => {
 
   await User.findByIdAndUpdate(_id, { token: "" });
 
-  res.status(204).json({ message: "No Content" });
+  res.status(204).json({});
 };
 
 const getCurrent = async (req, res) => {
   const { email, subscription } = req.user;
   res.json({ email, subscription });
 };
+
 const updateSubscription = async (req, res) => {
   const { _id } = req.user;
   const result = await User.findByIdAndUpdate(_id, req.body, { new: true });
